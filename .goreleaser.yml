@@ -2,7 +2,7 @@ env:
   - GO111MODULE=on
   - CGO_ENABLED=0
   - GITHUB_ORG=knadh
-  - DOCKER_ORG=listmonk
+  - DOCKER_ORG=custom-listmonk
 
 before:
   hooks:
@@ -13,15 +13,15 @@ builds:
     main: ./cmd
     goos:
       - linux
-      - windows
-      - darwin
-      - freebsd
-      - openbsd
-      - netbsd
+      # - windows
+      # - darwin
+      # - freebsd
+      # - openbsd
+      # - netbsd
     goarch:
       - amd64
-      - arm64
-      - arm
+      # - arm64
+      # - arm
     goarm:
       - 6
       - 7
@@ -63,80 +63,8 @@ dockers:
     extra_files:
       - config.toml.sample
       - config-demo.toml
-  - use: buildx
-    goos: linux
-    goarch: arm64
-    ids:
-      - listmonk
-    image_templates:
-      - "{{ .Env.DOCKER_ORG }}/{{ .ProjectName }}:latest-arm64v8"
-      - "{{ .Env.DOCKER_ORG }}/{{ .ProjectName }}:{{ .Tag }}-arm64v8"
-      - "ghcr.io/{{ .Env.GITHUB_ORG }}/{{ .ProjectName }}:latest-arm64v8"
-      - "ghcr.io/{{ .Env.GITHUB_ORG }}/{{ .ProjectName }}:{{ .Tag }}-arm64v8"
-    build_flag_templates:
-      - --platform=linux/arm64/v8
-      - --label=org.opencontainers.image.title={{ .ProjectName }}
-      - --label=org.opencontainers.image.description={{ .ProjectName }}
-      - --label=org.opencontainers.image.url=https://github.com/{{ .Env.GITHUB_ORG }}/{{ .ProjectName }}
-      - --label=org.opencontainers.image.source=https://github.com/{{ .Env.GITHUB_ORG }}/{{ .ProjectName }}
-      - --label=org.opencontainers.image.version={{ .Version }}
-      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
-      - --label=org.opencontainers.image.revision={{ .FullCommit }}
-      - --label=org.opencontainers.image.licenses=AGPL-3.0
-    dockerfile: Dockerfile
-    extra_files:
-      - config.toml.sample
-      - config-demo.toml
-  - use: buildx
-    goos: linux
-    goarch: arm
-    goarm: 6
-    ids:
-      - listmonk
-    image_templates:
-      - "{{ .Env.DOCKER_ORG }}/{{ .ProjectName }}:latest-armv6"
-      - "{{ .Env.DOCKER_ORG }}/{{ .ProjectName }}:{{ .Tag }}-armv6"
-      - "ghcr.io/{{ .Env.GITHUB_ORG }}/{{ .ProjectName }}:latest-armv6"
-      - "ghcr.io/{{ .Env.GITHUB_ORG }}/{{ .ProjectName }}:{{ .Tag }}-armv6"
-    build_flag_templates:
-      - --platform=linux/arm/v6
-      - --label=org.opencontainers.image.title={{ .ProjectName }}
-      - --label=org.opencontainers.image.description={{ .ProjectName }}
-      - --label=org.opencontainers.image.url=https://github.com/{{ .Env.GITHUB_ORG }}/{{ .ProjectName }}
-      - --label=org.opencontainers.image.source=https://github.com/{{ .Env.GITHUB_ORG }}/{{ .ProjectName }}
-      - --label=org.opencontainers.image.version={{ .Version }}
-      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
-      - --label=org.opencontainers.image.revision={{ .FullCommit }}
-      - --label=org.opencontainers.image.licenses=AGPL-3.0
-    dockerfile: Dockerfile
-    extra_files:
-      - config.toml.sample
-      - config-demo.toml
-  - use: buildx
-    goos: linux
-    goarch: arm
-    goarm: 7
-    ids:
-      - listmonk
-    image_templates:
-      - "{{ .Env.DOCKER_ORG }}/{{ .ProjectName }}:latest-armv7"
-      - "{{ .Env.DOCKER_ORG }}/{{ .ProjectName }}:{{ .Tag }}-armv7"
-      - "ghcr.io/{{ .Env.GITHUB_ORG }}/{{ .ProjectName }}:latest-armv7"
-      - "ghcr.io/{{ .Env.GITHUB_ORG }}/{{ .ProjectName }}:{{ .Tag }}-armv7"
-    build_flag_templates:
-      - --platform=linux/arm/v7
-      - --label=org.opencontainers.image.title={{ .ProjectName }}
-      - --label=org.opencontainers.image.description={{ .ProjectName }}
-      - --label=org.opencontainers.image.url=https://github.com/{{ .Env.GITHUB_ORG }}/{{ .ProjectName }}
-      - --label=org.opencontainers.image.source=https://github.com/{{ .Env.GITHUB_ORG }}/{{ .ProjectName }}
-      - --label=org.opencontainers.image.version={{ .Version }}
-      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
-      - --label=org.opencontainers.image.revision={{ .FullCommit }}
-      - --label=org.opencontainers.image.licenses=AGPL-3.0
-    dockerfile: Dockerfile
-    extra_files:
-      - config.toml.sample
-      - config-demo.toml
+      - entrypoint.sh
+
 
 docker_manifests:
   - name_template: "{{ .Env.DOCKER_ORG }}/{{ .ProjectName }}:latest"
