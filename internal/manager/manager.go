@@ -356,7 +356,7 @@ func (m *Manager) TemplateFuncs(c *models.Campaign) template.FuncMap {
 		},
 		"RootURL": func() string {
 			return m.cfg.RootURL
-		}
+		},
 	}
 
 	for k, v := range m.tplFuncs {
