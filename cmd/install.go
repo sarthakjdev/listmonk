@@ -43,6 +43,7 @@ func install(lastVer string, db *sqlx.DB, fs stuffbin.FileSystem, prompt, idempo
 
 	// If idempotence is on, check if the DB is already setup.
 	if idempotent {
+		lo.Println("checking if the DB is already setup!!")
 		if _, err := db.Exec("SELECT count(*) FROM settings"); err != nil {
 			// If "settings" doesn't exist, assume it's a fresh install.
 			if pqErr, ok := err.(*pq.Error); ok && pqErr.Code != "42P01" {
